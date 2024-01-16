@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-gray: #f9f9f9;
+  --color-light-gray: #f0f0f0;
+  --color-dark-gray: #828282;
+  --color-shadow: #e9e7e7;
+  --color-green: #79d179;
+  --color-light: #e2f5e2;
+}
+
+* {
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  background: #fff;
+}
+
+.orange-red-gradient {
+  background: rgb(254, 212, 93);
+  background: linear-gradient(110deg, rgba(254, 212, 93, 1) 0%, rgba(255, 110, 106, 1) 100%);
+}
+
+.blue-green-gradient {
+  background: rgb(9, 143, 219);
+  background: linear-gradient(110deg, rgba(9, 143, 219, 1) 0%, rgba(3, 217, 192, 1) 100%);
+}
+
+.blue-gradient {
+  background: rgb(4, 194, 254);
+  background: linear-gradient(90deg, rgba(4, 194, 254, 1) 0%, rgba(4, 124, 254, 1) 100%);
+}
+
+.orange-pink-purple-gradient {
+  background: rgb(246, 163, 71);
+  background: linear-gradient(110deg, rgba(246, 163, 71, 1) 0%, rgba(238, 44, 123, 1) 49%, rgba(132, 40, 192, 1) 100%);
+}
+
+.green-gradient {
+  background: rgb(125, 212, 125);
+  background: linear-gradient(90deg, rgba(125, 212, 125, 1) 0%, rgba(93, 203, 105, 1) 100%);
+}
+
+.stories-border {
+  background: linear-gradient(white, white) padding-box, linear-gradient(to top, rgba(9, 143, 219, 1), rgba(3, 217, 192, 1)) border-box;
+  border: 2px solid transparent;
+}
+
+.viewed-story-border {
+  background: linear-gradient(white, white) padding-box, linear-gradient(to top, var(--color-gray), var(--color-gray)) border-box;
+  border: 2px solid transparent;
+}
+
+.isSelected {
+  border: 1px solid var(--color-dark-gray);
+}
+
+.notSelected {
+  border: 1px solid transparent;
+}
+
+@keyframes show-welcome {
+  0% {
+    opacity: 0%;
+    scale: 90%;
+  }
+  100% {
+    opacity: 100%;
+    scale: 100%;
+  }
+}
+
+.welcome {
+  animation: show-welcome 0.35s;
+}
+
+.active {
+  @apply -ml-3 -mb-2 w-full bg-[var(--color-green)] rounded-[30px] py-2 px-3 text-white;
+}
+
+.active img {
+  @apply invert;
+}
