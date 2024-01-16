@@ -1,5 +1,4 @@
 import { Tab } from '@headlessui/react';
-import { Fragment } from 'react';
 
 const classNames = (...classes) => {
   return classes.filter(Boolean).join(' ');
@@ -7,7 +6,7 @@ const classNames = (...classes) => {
 
 const TabSelect = ({ options, setSelectedOption, title, fontSize = '16px', margin = '' }) => {
   return (
-    <div className={`w-full text-[14px] font-light text-[${fontSize}] ${margin}`}>
+    <div className={`w-full font-light text-[${fontSize}] ${margin}`}>
       <p className="mb-2 w-full self-start">{title}</p>
       <Tab.Group className="w-full">
         <Tab.List className="flex space-x-1 rounded-2xl bg-[var(--color-gray)] p-1">

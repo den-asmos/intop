@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowButton, Color, CustomButton, Checkbox, RadioSelect } from '../components';
+import { ArrowButton, Color, CustomButton, Checkbox, TabSelect } from '../components';
 import { importIcon, uploadIcon, successIcon } from '../assets';
 import { colors } from '../constants/colors';
 import { addProduct } from '../utils';
@@ -33,7 +33,7 @@ const AddProductPage = () => {
   const handleSumbmit = () => {
     const data = new FormData();
     data.append('user_id', JSON.parse(sessionStorage.getItem('user')).user_id);
-    data.append('brand_id', 1);
+    data.append('brand_id', 11);
     data.append('title', productInfo.title);
     data.append('price', productInfo.price);
     data.append('discount', productInfo.discount);
@@ -181,9 +181,9 @@ const AddProductPage = () => {
           />
         </div>
 
-        <RadioSelect options={conditions} setSelectedOption={setSelectedCondition} title="Состояние" fontSize="14px" margin="mb-5" />
+        <TabSelect options={conditions} setSelectedOption={setSelectedCondition} title="Состояние" fontSize="14px" margin="mb-5" />
 
-        <RadioSelect options={typesOfSale} setSelectedOption={setSelectedTypeOfSale} title="Тип продажи" fontSize="14px" margin="mb-5" width="25%" />
+        <TabSelect options={typesOfSale} setSelectedOption={setSelectedTypeOfSale} title="Тип продажи" fontSize="14px" margin="mb-5" width="25%" />
 
         <CustomButton onClick={handleSumbmit} styles="mt-5 p-3 w-[80%] bg-[var(--color-green)] text-white text-[14px] rounded-xl">
           Создать

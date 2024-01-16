@@ -7,5 +7,19 @@ import { addProduct } from './addProduct';
 import { getCode } from './getCode';
 import { verifyCode } from './verifyCode';
 import { becomeSeller } from './becomeSeller';
+import { getProductsWithFilters } from './getProductsWithFilters';
+import { filtersToUrl } from './filtersToUrl';
 
-export { getUserInfo, getStories, getProducts, getCategories, getProductsByCategory, addProduct, getCode, verifyCode, becomeSeller };
+export {
+  getUserInfo,
+  getStories,
+  getProducts,
+  getCategories,
+  getProductsByCategory,
+  addProduct,
+  getCode,
+  verifyCode,
+  becomeSeller,
+  getProductsWithFilters,
+  filtersToUrl,
+};

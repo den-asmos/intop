@@ -3,23 +3,66 @@ import { Transition, Dialog } from '@headlessui/react';
 import { closeIcon, filterIcon } from '../assets';
 import CustomButton from './CustomButton';
 import Checkbox from './Checkbox';
-import TabSelect from './TabSelect';
 import RadioSelect from './RadioSelect';
+import { filters } from '../constants';
+import { filtersToUrl } from '../utils';
 
-const Filters = ({ language }) => {
+const Filters = ({ language, setFilters }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [sort] = useState(['Сначала дешевле', 'Сначала дороже']);
   const [sortingOption, setSortingOption] = useState('');
-  const [currency] = useState(['UZS', 'USD']);
   const [selectedCurrency, setSelectedCurrency] = useState('');
-  const [typesOfSale] = useState(['Рассрочка', 'Опт', 'Розница']);
   const [selectedTypeOfSale, setSelectedTypeOfSale] = useState('');
-  const [conditions] = useState(['Новый', 'Б/У']);
   const [selectedCondition, setSelectedCondition] = useState('');
-  const [sellers] = useState(['Верифицированный', 'Не верифицированный']);
   const [selectedSeller, setSelectedSeller] = useState('');
   const [productsNearby, setProductsNearby] = useState(false);
   const [bidding, setBidding] = useState(false);
+  const [price, setPrice] = useState({
+    priceFrom: '',
+    priceTo: '',
+  });
+
+  const allFilers = [
+    sortingOption,
+    selectedCurrency,
+    selectedTypeOfSale,
+    selectedCondition,
+    selectedSeller,
+    productsNearby,
+    bidding,
+    price.priceFrom,
+    price.priceTo,
+  ];
+
+  const handlePriceChange = ({ target }) => {
+    setPrice({ ...price, [target.dataset.name]: target.value });
+  };
+
+  const handleSelectedFitersCount = () => {
+    const selectedFilters = allFilers.reduce((acc, cur) => (acc += Boolean(cur) ? 1 : 0), 0);
+
+    return selectedFilters;
+  };
+
+  const handleFiltersReset = () => {
+    setSortingOption('');
+    setSelectedCurrency('');
+    setSelectedTypeOfSale('');
+    setSelectedCondition('');
+    setSelectedSeller('');
+    setProductsNearby(false);
+    setBidding(false);
+    setPrice({
+      priceFrom: '',
+      priceTo: '',
+    });
+    setFilters('');
+  };
+
+  const handleFiltersSubmit = () => {
+    const url = filtersToUrl(allFilers);
+    closeModal();
+    setFilters(url);
+  };
 
   const openModal = () => {
     setIsOpen(true);
@@ -28,6 +71,7 @@ const Filters = ({ language }) => {
   const closeModal = () => {
     setIsOpen(false);
   };
+
   return (
     <>
       <CustomButton styles="py-1 px-2 flex justify-between items-center gap-2 bg-black text-white text-[12px] self-start" onClick={openModal}>
@@ -66,32 +110,74 @@ const Filters = ({ language }) => {
                   </Dialog.Title>
 
                   <div className="flex flex-col justify-center items-start mt-4 font-light gap-6">
-                    <RadioSelect options={sort} selectedOption={sortingOption} setSelectedOption={setSortingOption} title="Сортировать" />
+                    <RadioSelect options={filters.sort} selectedOption={sortingOption} setSelectedOption={setSortingOption} title="Сортировать" />
 
                     <Checkbox value={productsNearby} onValueChange={setProductsNearby} title="Товары рядом" />
 
+                    <div className="w-full font-light text-[16px] mb-5">
+                      <p className="mb-2 w-full self-start">Цена</p>
+                      <div className="w-full flex justify-evenly items-center text-[12px]">
+                        <div className="flex flex-col justify-center items-start">
+                          <label htmlFor="price-from" className="mb-2">
+                            От
+                          </label>
+                          <input
+                            id="price-from"
+                            type="number"
+                            data-name="priceFrom"
+                            required={true}
+                            value={price.priceFrom}
+                            onChange={handlePriceChange}
+                            className="p-2 border-b-2 border-[var(--color-light-gray)] focus:outline-none"
+                          />
+                        </div>
+                        <div className="flex flex-col justify-center items-start">
+                          <label htmlFor="price-to" className="mb-2">
+                            До
+                          </label>
+                          <input
+                            id="price-to"
+                            type="number"
+                            data-name="priceTo"
+                            required={true}
+                            value={price.priceTo}
+                            onChange={handlePriceChange}
+                            className="p-2 border-b-2 border-[var(--color-light-gray)] focus:outline-none"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
                     <Checkbox value={bidding} onValueChange={setBidding} title="Возможен торг" />
 
-                    <RadioSelect options={currency} selectedOption={selectedCurrency} setSelectedOption={setSelectedCurrency} title="Валюта" />
+                    <RadioSelect options={filters.currency} selectedOption={selectedCurrency} setSelectedOption={setSelectedCurrency} title="Валюта" />
 
                     <RadioSelect
-                      options={typesOfSale}
+                      options={filters.typeOfSale}
                       selectedOption={selectedTypeOfSale}
                       setSelectedOption={setSelectedTypeOfSale}
                       title="Тип продажи"
                       width="25%"
                     />
 
-                    <RadioSelect options={conditions} selectedOption={selectedCondition} setSelectedOption={setSelectedCondition} title="Состояние" />
+                    <RadioSelect options={filters.condition} selectedOption={selectedCondition} setSelectedOption={setSelectedCondition} title="Состояние" />
 
-                    <RadioSelect options={sellers} selectedOption={selectedSeller} setSelectedOption={setSelectedSeller} title="Продавец" />
+                    <RadioSelect options={filters.seller} selectedOption={selectedSeller} setSelectedOption={setSelectedSeller} title="Продавец" />
                   </div>
 
                   <div className="mt-8 w-full flex justify-center gap-2">
-                    <CustomButton styles="mt-5 p-3 w-[80%] bg-white text-[14px] ring-1 ring-[var(--color-light-gray)] rounded-[30px] shadow-sm">
-                      Сброс фильтров
+                    <CustomButton
+                      onClick={handleFiltersReset}
+                      styles="mt-5 p-3 w-[80%] bg-white text-[14px] ring-1 ring-[var(--color-light-gray)] rounded-[30px] shadow-sm"
+                    >
+                      Сброс фильтров {handleSelectedFitersCount() > 0 && <span>({handleSelectedFitersCount()})</span>}
                     </CustomButton>
-                    <CustomButton styles="mt-5 p-3 w-[80%] bg-[var(--color-green)] text-white text-[14px] rounded-[30px] shadow-sm">Применить</CustomButton>
+                    <CustomButton
+                      onClick={handleFiltersSubmit}
+                      styles="mt-5 p-3 w-[80%] bg-[var(--color-green)] text-white text-[14px] rounded-[30px] shadow-sm"
+                    >
+                      Применить
+                    </CustomButton>
                   </div>
 
                   <div className="mt-4">

@@ -3,25 +3,34 @@ import ProductCard from './ProductCard';
 import CustomButton from './CustomButton';
 import { filterIcon, noImage, categoryIcon, instagram } from '../assets';
 import Loader from './Loader';
-import { getProducts } from '../utils';
+import { getProducts, getProductsWithFilters } from '../utils';
 import Filters from './Filters';
 
 const Catalogue = ({ language }) => {
   const [products, setProducts] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [filters, setFilters] = useState('');
 
   useEffect(() => {
-    getProducts()
-      .then((productsData) => setProducts(productsData))
-      .finally(() => setLoading(false));
-  }, []);
+    setLoading(true);
+
+    if (filters) {
+      getProductsWithFilters(filters)
+        .then((productsData) => setProducts(productsData))
+        .finally(() => setLoading(false));
+    } else {
+      getProducts()
+        .then((productsData) => setProducts(productsData))
+        .finally(() => setLoading(false));
+    }
+  }, [filters]);
 
   return loading ? (
     <Loader />
   ) : (
     <>
       <div className="w-full flex justify-between items-center">
-        <Filters language={language} />
+        <Filters language={language} setFilters={setFilters} />
 
         <div className="flex justify-center items-center gap-2">
           <img src={instagram} alt="instagram" width={18} height={18} />

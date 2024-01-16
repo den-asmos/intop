@@ -7,5 +7,5 @@ export const getCategories = async () => {
     },
   };
 
-  return (await axios.get(`${process.env.REACT_APP_URL}/brands`, config)).data;
+  return (await axios.get(`${process.env.REACT_APP_URL}/categories`, config)).data;
 };
