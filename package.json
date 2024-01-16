@@ -2,7 +2,7 @@
   "name": "web-git",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://iatsun.onrender.com",
+  "proxy": "https://tg.intop.uz",
   "dependencies": {
     "@headlessui/react": "^1.7.18",
     "@testing-library/jest-dom": "^5.17.0",
